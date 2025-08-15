@@ -1,103 +1,111 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import Navbar from "../components/Navbar";
+import Form from "../components/Form";
+import Footer from "../components/Footer";
+
+export default function HomePage() {
+  const [result, setResult] = useState<number | null>(null);
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <Navbar />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <div
+        style={{
+          minHeight: "100vh",
+          backgroundImage: `url('https://www.sunwaymedical.com/images/uploads/editor/product/inthenews/20interestingfacts.jpg')`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+          padding: "2rem 1rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          color: "#fff",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          fontWeight: 600,
+          userSelect: "none",
+          position: "relative",
+          zIndex: 0,
+        }}
+      >
+        {/* Dark overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1,
+          }}
+        />
+
+        {/* Info Section */}
+        <section
+          style={{
+            position: "relative",
+            zIndex: 2,
+            maxWidth: "700px",
+            marginBottom: "2rem",
+            backgroundColor: "rgba(245, 138, 138, 0.7)",
+            padding: "1.5rem",
+            borderRadius: "12px",
+            textAlign: "center",
+            fontSize: "1.25rem",
+            lineHeight: 1.6,
+            width: "100%",
+            color: "black",
+          }}
+        >
+          <p>
+            Heart disease is one of the leading causes of death worldwide. It occurs when the heart’s
+            blood vessels are damaged or blocked, leading to serious health complications such as heart attacks.
+            Early detection and lifestyle changes can significantly reduce the risk of heart disease.
+            Stay informed and take proactive steps to maintain a healthy heart.
+          </p>
+        </section>
+
+        {/* Form container with bright background */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            width: "100%",
+            maxWidth: "600px",
+            backgroundColor: "rgba(202, 99, 99, 0.95)",
+            padding: "2rem",
+            borderRadius: "12px",
+            boxShadow: "0 0 15px rgba(0,0,0,0.3)",
+            color: "#000",
+          }}
+        >
+          <Form onResult={(prediction) => setResult(prediction)} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        {/* Prediction display */}
+        {result !== null && (
+          <div
+            style={{
+              position: "relative",
+              zIndex: 2,
+              maxWidth: "600px",
+              margin: "1rem auto",
+              fontSize: "1.3rem",
+              fontWeight: 600,
+              color: "#ffd700",
+              textAlign: "center",
+              width: "100%",
+              textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
+            }}
+          >
+            Prediction: {result === 1 ? "⚠ Stroke Risk Detected" : "✅ No Stroke Risk"}
+          </div>
+        )}
+      </div>
+
+      {/* Footer outside the overlay container */}
+      <Footer />
+    </>
   );
 }
