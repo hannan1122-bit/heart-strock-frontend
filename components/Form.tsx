@@ -40,7 +40,7 @@ export default function Form({ onResult }: { onResult: (result: number) => void 
   });
 
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false); // <- Loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const value = e.target.value === "" ? "" : Number(e.target.value);
@@ -53,7 +53,7 @@ export default function Form({ onResult }: { onResult: (result: number) => void 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setLoading(true); // start loading
+    setIsLoading(true);
 
     try {
       const res = await fetch(
@@ -65,15 +65,17 @@ export default function Form({ onResult }: { onResult: (result: number) => void 
         }
       );
 
-      if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+      if (!res.ok) {
+        throw new Error(`Server responded with ${res.status}`);
+      }
 
       const data = await res.json();
       onResult(data.prediction);
     } catch (err) {
       console.error("API Error:", err);
-      setError("Failed to connect to prediction server. Is FastAPI running?");
+      setError("Failed to connect to prediction server. Please try again later.");
     } finally {
-      setLoading(false); // stop loading
+      setIsLoading(false);
     }
   };
 
@@ -89,22 +91,12 @@ export default function Form({ onResult }: { onResult: (result: number) => void 
         select:focus, input[type="number"]:focus { outline: none; border-color:rgb(153, 31, 0); box-shadow: 0 0 8px rgba(153, 18, 0, 0.63); }
         button { background-color:rgb(153, 18, 0); color: white; padding: 0.8rem; font-size: 1.1rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background-color 0.3s ease; margin-top: 1rem; }
         button:hover { background-color:rgb(102, 0, 0); }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
         .error { margin-top: 1rem; color: #d32f2f; text-align: center; font-weight: 700; }
-
-        /* Loading spinner */
-        .spinner {
-          border: 4px solid #f3f3f3;
-          border-top: 4px solid rgb(153, 18, 0);
-          border-radius: 50%;
-          width: 36px;
-          height: 36px;
-          animation: spin 1s linear infinite;
-          margin: 1rem auto;
-        }
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
+        .loading-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 1rem 0; }
+        .loading-spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: rgb(153, 18, 0); animation: spin 1s ease-in-out infinite; }
+        .loading-text { margin-top: 1rem; color: rgb(141, 41, 2); font-weight: 600; }
+        @keyframes spin { to { transform: rotate(360deg); } }
       `}</style>
 
       <div className="container">
@@ -114,23 +106,128 @@ export default function Form({ onResult }: { onResult: (result: number) => void 
         {error && <p className="error">{error}</p>}
 
         <form onSubmit={handleSubmit}>
-          {/* ... all your input fields remain the same ... */}
+          {/* Gender */}
           <div>
             <label>Gender:</label>
-            <select name="gender" value={formData.gender} onChange={handleChange} required>
+            <select name="gender" value={formData.gender} onChange={handleChange} required disabled={isLoading}>
               <option value={0}>Female</option>
               <option value={1}>Male</option>
             </select>
           </div>
-          {/* Repeat all your other fields here */}
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Predicting..." : "Predict"}
+          {/* Age */}
+          <div>
+            <label>Age:</label>
+            <input name="age" type="number" step="0.1" value={formData.age} onChange={handleChange} required min="0" max="120" placeholder="Enter age" disabled={isLoading} />
+          </div>
+
+          {/* Hypertension */}
+          <div>
+            <label>Hypertension:</label>
+            <select name="hypertension" value={formData.hypertension} onChange={handleChange} required disabled={isLoading}>
+              <option value={0}>No</option>
+              <option value={1}>Yes</option>
+            </select>
+          </div>
+
+          {/* Heart Disease */}
+          <div>
+            <label>Heart Disease:</label>
+            <select name="heart_disease" value={formData.heart_disease} onChange={handleChange} required disabled={isLoading}>
+              <option value={0}>No</option>
+              <option value={1}>Yes</option>
+            </select>
+          </div>
+
+          {/* Ever Married */}
+          <div>
+            <label>Ever Married:</label>
+            <select name="ever_married" value={formData.ever_married} onChange={handleChange} required disabled={isLoading}>
+              <option value={0}>No</option>
+              <option value={1}>Yes</option>
+            </select>
+          </div>
+
+          {/* Residence Type */}
+          <div>
+            <label>Residence Type:</label>
+            <select name="Residence_type" value={formData.Residence_type} onChange={handleChange} required disabled={isLoading}>
+              <option value={0}>Rural</option>
+              <option value={1}>Urban</option>
+            </select>
+          </div>
+
+          {/* Avg Glucose */}
+          <div>
+            <label>Average Glucose Level:</label>
+            <input name="avg_glucose_level" type="number" step="0.1" value={formData.avg_glucose_level} onChange={handleChange} required placeholder="e.g. 85.6" min="0" disabled={isLoading} />
+          </div>
+
+          {/* BMI */}
+          <div>
+            <label>BMI:</label>
+            <input name="bmi" type="number" step="0.1" value={formData.bmi} onChange={handleChange} required placeholder="e.g. 25.4" min="0" disabled={isLoading} />
+          </div>
+
+          {/* Work Type */}
+          <div>
+            <label>Work Type:</label>
+            <select
+              required
+              onChange={(e) => {
+                const choice = Number(e.target.value);
+                setFormData({
+                  ...formData,
+                  work_type_Never_worked: choice === 1 ? 1 : 0,
+                  work_type_Private: choice === 2 ? 1 : 0,
+                  work_type_Self_employed: choice === 3 ? 1 : 0,
+                  work_type_children: choice === 4 ? 1 : 0,
+                });
+              }}
+              disabled={isLoading}
+            >
+              <option value="">-- Select Work Type --</option>
+              <option value={1}>Never Worked</option>
+              <option value={2}>Private</option>
+              <option value={3}>Self Employed</option>
+              <option value={4}>Children</option>
+            </select>
+          </div>
+
+          {/* Smoking Status */}
+          <div>
+            <label>Smoking Status:</label>
+            <select
+              required
+              onChange={(e) => {
+                const choice = Number(e.target.value);
+                setFormData({
+                  ...formData,
+                  smoking_status_formerly_smoked: choice === 1 ? 1 : 0,
+                  smoking_status_never_smoked: choice === 2 ? 1 : 0,
+                  smoking_status_smokes: choice === 3 ? 1 : 0,
+                });
+              }}
+              disabled={isLoading}
+            >
+              <option value="">-- Select Smoking Status --</option>
+              <option value={1}>Formerly Smoked</option>
+              <option value={2}>Never Smoked</option>
+              <option value={3}>Smokes</option>
+            </select>
+          </div>
+
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Processing...' : 'Predict'}
           </button>
-        </form>
 
-        {/* Show spinner while loading */}
-        {loading && <div className="spinner"></div>}
+          {isLoading && (
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p className="loading-text">Analyzing patient data...</p>
+            </div>
+          )}
+        </form>
       </div>
     </>
   );
