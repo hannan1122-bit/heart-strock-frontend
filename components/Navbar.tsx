@@ -13,16 +13,13 @@ export default function Navbar() {
           position: sticky;
           top: 0;
           z-index: 1000;
-
-          border: 3px solid black;   /* Rounded black border */
+          border: 3px solid black;
           border-radius: 15px;
-
           display: flex;
           align-items: center;
           justify-content: space-between;
           user-select: none;
         }
-
         .nav-center {
           flex: 1;
           text-align: center;
@@ -33,7 +30,6 @@ export default function Navbar() {
           color: black;
           user-select: none;
         }
-
         .nav-icon {
           width: 36px;
           height: 36px;
@@ -44,21 +40,17 @@ export default function Navbar() {
           font-size: 2.5rem;
           user-select: none;
         }
-
         .heart-icon path {
           fill: black;
         }
       `}</style>
-
       <nav>
         {/* Left React Emoji */}
         <div className="nav-icon" aria-label="React Emoji" role="img" title="React">
           ⚛️
         </div>
-
         {/* Center Text */}
-        <div className="nav-center">Doctors' Stroke Prediction</div>
-
+        <div className="nav-center">Doctors&apos; Stroke Prediction</div>
         {/* Right Human Heart SVG Icon */}
         <svg
           className="nav-icon heart-icon"
@@ -73,7 +65,6 @@ export default function Navbar() {
           strokeLinejoin="round"
           style={{ width: "36px", height: "36px" }}
         >
-          {/* Simplified human heart shape SVG */}
           <path d="M32 58s26-15.5 26-35.5S44 4 32 20 6 9 6 22.5 32 58 32 58z" />
           <path d="M32 30c-3-8-15-10-15 2" fill="none" />
           <path d="M32 30c3-8 15-10 15 2" fill="none" />
